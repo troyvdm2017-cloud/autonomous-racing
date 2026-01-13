@@ -9,7 +9,7 @@ class RacetrackEnv(gym.Env):
     def __init__(
         self,
         simulator,
-        sensor_opening_angle=60,
+        sensor_opening_angle=30,
         sensor_pixels=60,
         max_distance=450,
         max_steps=5000,

@@ -1,16 +1,16 @@
 import time
 import matplotlib.pyplot as plt
-from stable_baselines3 import PPO
+from stable_baselines3 import PPO, SAC
 
-from RacingSimulator import Racetrack, Simulator, LiveVisualizer
+from RacingSimulatorD import Racetrack, Simulator, LiveVisualizer
 from racing_env import RacetrackEnv
 
 
-MODEL_PATH = "ppo_racer_500k_f"
+MODEL_PATH = "ppo_racer_5m_testneurewards4tracks.zip"
 
 
 def main():
-    track = Racetrack("track1.json", 500, 100, 0)
+    track = Racetrack("track2.json", 400, 480, 0)
     sim = Simulator([track])
     env = RacetrackEnv(sim)
 

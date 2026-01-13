@@ -177,24 +177,18 @@ class Simulator:
         self.y += self.velocity * self.dt * np.sin(np.deg2rad(self.angle))
 
         collision = self.check_collision()
-        reward = self.velocity * 0.003
+        reward = self.velocity * 0.1
         done = False
 
         self.time_elapsed += self.dt
 
-        if abs(self.x - (self.racetrack.x_start-50)) < 10 and -100 <self.y - self.racetrack.y_start < 100:
-            reward = 1
-            done = True
-            print("finish")
-
-        if abs(self.x - (self.racetrack.x_start-30)) < 10 and -100 <self.y - self.racetrack.y_start < 100:
-            reward = -1
-            done = True
+        if abs(self.x - (self.racetrack.x_start)) < 30 and -100 <self.y - self.racetrack.y_start < 100:
+            reward = 1000 / (self.time_elapsed + 1e-6)
+            print(self.time_elapsed)
 
         if collision:
-            reward = -1
+            reward = -100
             done = True
-
 
         obs = self.sense()
         return obs, reward, done
@@ -218,7 +212,7 @@ class Simulator:
         else:
             return True
 
-    def sense(self, sensor_opening_angle: float = 30, sensor_pixels: int = 60, max_distance: float = 450):
+    def sense(self, sensor_opening_angle: float = 60, sensor_pixels: int = 60, max_distance: float = 450):
         readings = []
         max_distance *= self.racetrack.scaling_factor
 
@@ -247,7 +241,7 @@ class Simulator:
 class LiveVisualizer:
     def __init__(self,
                  simulator,
-                 sensor_opening_angle=30,
+                 sensor_opening_angle=60,
                  sensor_pixels=60,
                  max_distance=450,
                  refresh_interval=1):

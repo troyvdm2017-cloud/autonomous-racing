@@ -127,7 +127,7 @@ class Simulator:
                  dt: float = 0.1):
         self.track_ls = racetrack_ls
         self.dt = dt
-        self.time_elapsed = 0.0
+        self.time_elapsed = 0.0 #defenition time_elepsed
         self.length = racer_length
         self.width = racer_width
         self.max_velocity = max_velocity
@@ -177,24 +177,22 @@ class Simulator:
         self.y += self.velocity * self.dt * np.sin(np.deg2rad(self.angle))
 
         collision = self.check_collision()
-        reward = self.velocity * 0.003
+        reward = self.velocity * 0.1
         done = False
 
-        self.time_elapsed += self.dt
+        self.time_elapsed += self.dt #time_elepsed
 
         if abs(self.x - (self.racetrack.x_start-50)) < 10 and -100 <self.y - self.racetrack.y_start < 100:
-            reward = 1
+            reward = 1_000 / (self.time_elapsed + 1e-6)
             done = True
-            print("finish")
 
         if abs(self.x - (self.racetrack.x_start-30)) < 10 and -100 <self.y - self.racetrack.y_start < 100:
-            reward = -1
+            reward = -100
             done = True
 
         if collision:
-            reward = -1
+            reward = -100
             done = True
-
 
         obs = self.sense()
         return obs, reward, done
